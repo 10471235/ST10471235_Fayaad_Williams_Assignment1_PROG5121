@@ -1,4 +1,4 @@
-MessengerApp: Registration & Login System
+*MessengerApp: Registration & Login System*
 
 MessengerApp is a Java application for secure user registration and login.
 
