@@ -2,7 +2,9 @@
 
 MessengerApp is a Java application for secure user registration and login.
 
-Features
+
+Features:
+
 User Registration with:
 
 Username validation (must contain more than 5 characters)
@@ -11,12 +13,16 @@ Password check (must include uppercase, number, special character and be at leas
 
 South African phone number (must start with +27 and be 12 characters total)
 
+
 User Login:
+
 Verifies input against previously registered user.
 
 Displays personalized welcome message or error.
 
+
 How to Run (in NetBeans)
+
 Open NetBeans
 
 File → Open Project... → Select MessengerApp folder
