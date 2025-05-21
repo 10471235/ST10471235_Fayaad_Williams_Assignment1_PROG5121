@@ -96,6 +96,11 @@ public class LoginGUI extends JFrame {
 
                 boolean success = login.loginUser(inputUsername, inputPassword);
                 outputArea.setText(login.returnLoginStatus(success));
+                
+                if (success) {
+                    dispose();
+                    new QuickChatApp(login);
+                }
             }
         });
 

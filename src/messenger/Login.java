@@ -67,7 +67,7 @@ public class Login {
         if (!validUsername) {
             this.username = null;
             this.password = null;
-            return "Username is not correctly formatted, please ensure that your username is more than five characters in length.";
+            return "Username is not correctly formatted, please ensure that your username is less than five characters in length and contains an underscore.";
         }
 
         if (!validPassword) {
