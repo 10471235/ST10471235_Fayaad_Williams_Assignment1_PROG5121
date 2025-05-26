@@ -1,35 +1,42 @@
 <project name="QuickChat" default="test" basedir=".">
-  <!-- Properties -->
-  <property name="src.dir" location="src"/>
-  <property name="test.dir" location="test"/>
-  <property name="build.dir" location="build"/>
-  <property name="lib.dir" location="lib"/>
+    <!-- Properties -->
+    <property name="src.dir" location="src"/>
+    <property name="test.dir" location="test"/>
+    <property name="build.dir" location="build"/>
+    <property name="lib.dir" location="lib"/>
+    <property name="reports.dir" location="${build.dir}/test-reports"/>
 
-  <!-- Classpath -->
-  <path id="test.classpath">
-    <pathelement location="${build.dir}"/>
-    <fileset dir="${lib.dir}" includes="*.jar"/>
-  </path>
+    <!-- Classpath -->
+    <path id="test.classpath">
+        <pathelement location="${build.dir}"/>
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+    </path>
 
-  <!-- Targets -->
-  <target name="clean">
-    <delete dir="${build.dir}"/>
-  </target>
+    <!-- Targets -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
 
-  <target name="compile" depends="clean">
-    <mkdir dir="${build.dir}"/>
-    <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
-    <javac srcdir="${test.dir}" destdir="${build.dir}" includeantruntime="false">
-      <classpath refid="test.classpath"/>
-    </javac>
-  </target>
+    <target name="compile" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+        <javac srcdir="${test.dir}" destdir="${build.dir}" includeantruntime="false">
+            <classpath refid="test.classpath"/>
+        </javac>
+    </target>
 
-  <target name="test" depends="compile">
-    <junit printsummary="yes" haltonfailure="yes">
-      <classpath refid="test.classpath"/>
-      <batchtest fork="yes">
-        <fileset dir="${test.dir}" includes="**/*Test.java"/>
-      </batchtest>
-    </junit>
-  </target>
+    <target name="test" depends="compile">
+        <mkdir dir="${reports.dir}"/>
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="test.classpath"/>
+            <formatter type="xml"/>
+            <batchtest todir="${reports.dir}">
+                <fileset dir="${test.dir}" includes="**/*Test.java"/>
+            </batchtest>
+        </junit>
+        <junitreport todir="${reports.dir}">
+            <fileset dir="${reports.dir}" includes="TEST-*.xml"/>
+            <report format="frames" todir="${reports.dir}/html"/>
+        </junitreport>
+    </target>
 </project>
