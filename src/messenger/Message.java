@@ -1,3 +1,14 @@
+/*
+ * Author: Fayaad Williams
+ * Student Number: ST10471235
+ * Project: Quick chat app
+ *
+ * Note:
+ * Portions of this code were developed and debugged with the assistance of ChatGPT (OpenAI, 2025)
+ * for code explanation, error resolution and structure guidance.
+ * URL: https://chat.openai.com
+ */
+
 package messenger;
 
 import org.json.JSONArray;
@@ -12,7 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Message {
-    // Static arrays for message management
+    //arrays for message details
     private static List<Message> sentMessages = new ArrayList<>();
     private static List<Message> disregardedMessages = new ArrayList<>();
     private static List<Message> storedMessages = new ArrayList<>();
@@ -20,7 +31,7 @@ public class Message {
     private static List<String> messageIds = new ArrayList<>();
     private static int totalMessagesSent = 0;
     
-    // Instance variables
+    //private variables
     private String messageId;
     private int numSent;
     private String recipient;
@@ -28,6 +39,7 @@ public class Message {
     private String messageHash;
     private String status;
 
+    
     public Message(String recipient, String messageContent) {
         this.messageId = generateMessageId();
         this.numSent = ++totalMessagesSent;
@@ -35,7 +47,7 @@ public class Message {
         this.messageContent = messageContent;
         this.messageHash = createMessageHash();
         
-        // Add to tracking lists
+        //tracking lists
         messageIds.add(this.messageId);
         messageHashes.add(this.messageHash);
     }
@@ -46,17 +58,16 @@ public class Message {
     }
 
     public String createMessageHash() {
-    // Handle empty or null message content
+    //for empty message content
     if (messageContent == null || messageContent.trim().isEmpty()) {
         return messageId.substring(0, 2) + ":" + numSent + ":EMPTY";
     }
     
-    String[] words = messageContent.trim().split("\\s+"); // Split by whitespace
+    String[] words = messageContent.trim().split("\\s+"); //for handling whitespace
     
     String firstWord = words.length > 0 ? words[0] : "";
     String lastWord = words.length > 1 ? words[words.length-1] : firstWord;
     
-    // Handle empty words
     firstWord = firstWord != null ? firstWord.toUpperCase() : "";
     lastWord = lastWord != null ? lastWord.toUpperCase() : "";
     
@@ -64,43 +75,40 @@ public class Message {
 }
 
     public String sentMessage() {
-        String[] options = {"Send", "Discard", "Store"};
-        int choice = JOptionPane.showOptionDialog(null,
-                "What would you like to do with this message?",
-                "Message Options",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null, options, options[0]);
+    String[] options = {"Send Message", "Disregard Message", "Store Message to send later"};
+    int choice = JOptionPane.showOptionDialog(null, "What would you like to do with the message?", "Message Options", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        if (choice==0){ {
-                status = "Sent";
-                sentMessages.add(this);
-                return "Message sent successfully.";}
-         if (choice==1){ // Discard
-                status = "Discarded";
-                disregardedMessages.add(this);
-                totalMessagesSent=totalMessagesSent-1;
-                return "Message discarded.";}
-        else if(choice==2){ // Store
-                status = "Stored";
-                storedMessages.add(this);
-                storeMessage();
-                return "Message stored successfully.";}
-        else if(choice==-1){
-                return "No action taken.";}
-        }
-        return 
+    if (choice == 0) { //If choice is 0 then the message will be sent
+        status = "Sent";
+        sentMessages.add(this);
+        return "Message sent successfully.";
+    } 
+    else if (choice == 1) { //If choice is 1 then the message will be discarded
+        status = "Discarded";
+        disregardedMessages.add(this);
+        totalMessagesSent--;
+        return "Message discarded.";
+    } 
+    else if (choice == 2) { //if choice is 2 then the message will be stored
+        status = "Stored";
+        storedMessages.add(this);
+        storeMessage();
+        return "Message stored successfully.";
     }
+    else { // Any other case (including -1)
+        return "No action taken.";
+    }
+}
 
     public static void loadStoredMessages() {
         try {
             if (!Files.exists(Paths.get("messages.json"))) {
-                return; // No file exists yet
+                return; //This output will be displayed if json file doesnt exists yet
             }
 
             String content = new String(Files.readAllBytes(Paths.get("messages.json")));
             if (content.trim().isEmpty()) {
-                return; // Empty file
+                return; //this output will happen after reading an empty json file
             }
 
             JSONArray jsonArray = new JSONArray(content);
@@ -112,7 +120,7 @@ public class Message {
                 msg.status = obj.getString("status");
                 
                 if ("Stored".equals(msg.status)) {
-                    storedMessages.add(msg);
+                    storedMessages.add(msg);//collects all information for message to be stored
                 }
             }
         } catch (Exception e) {
@@ -137,7 +145,7 @@ public class Message {
                 jsonArray = new JSONArray();
             }
 
-            jsonArray.put(jsonMsg);
+        jsonArray.put(jsonMsg);
 
             try (FileWriter writer = new FileWriter("messages.json")) {
                 writer.write(jsonArray.toString(4));
@@ -153,19 +161,19 @@ public class Message {
         for(Message msg : sentMessages) {
             sb.append("To: ").append(msg.getRecipient())
               .append(" | Message: ").append(msg.getMessageContent())
-              .append("\n");
+              .append("\n"); //displays all messages you have sent
         }
         for (Message msg : storedMessages) {
             sb.append("[STORED] To: ").append(msg.getRecipient())
               .append(" | Message: ").append(msg.getMessageContent())
-              .append("\n");
+              .append("\n"); // displayed all messages you have stored
         }
         
         return sb.toString();
     }
     
     public static String searchByMessageId(String messageId) {
-            // Seach in sent messages
+            //search sent messages by the message ID shows whether its a sent message or stored message.
             for (Message msg : sentMessages) {
                 if (msg.getMessageId().equals(messageId)) {
                     return "Found in sent message:\n" +
@@ -181,13 +189,13 @@ public class Message {
                 }
             }
             
-            return "No message found with ID: " + messageId;
+       return "No message found with ID: " + messageId;
     }
     
-    public static String deleteByHash(String hash) {
+    public static String deleteByHash(String hash) { //the actual method for deleting messages both sent and stored 
         for(Message msg : sentMessages) {
-            if (msg.getMessageHash().equals(hash)) {
-                sentMessages.remove(msg);
+            if (msg.getMessageHash().equals(hash)) {//retrieving message hash
+                sentMessages.remove(msg);//removal of message
                 return "Deleted sent message: " + msg.getMessageContent();
             }
         }
@@ -201,7 +209,7 @@ public class Message {
         return "No message found with hash: " + hash;
     }
     
-private static void removeFromJsonFile(Message msgToRemove) {
+private static void removeFromJsonFile(Message msgToRemove) { 
     try {
         if (!Files.exists(Paths.get("messages.json"))) {
             return;
@@ -229,17 +237,16 @@ private static void removeFromJsonFile(Message msgToRemove) {
     // Reporting methods
     public static String generateReport() {
         StringBuilder sb = new StringBuilder();
-        sb.append("=== MESSAGE REPORT ===\n");
+        sb.append("MESSAGE REPORT\n");
         sb.append("Total Sent: ").append(sentMessages.size()).append("\n");
         sb.append("Total Stored: ").append(storedMessages.size()).append("\n");
         sb.append("Total Discarded: ").append(disregardedMessages.size()).append("\n\n");
-        
         sb.append("SENT MESSAGES:\n");
         for (Message msg : sentMessages) {
-            sb.append("ID: ").append(msg.messageId).append("\n");
-            sb.append("To: ").append(msg.recipient).append("\n");
-            sb.append("Message: ").append(msg.messageContent).append("\n");
-            sb.append("Hash: ").append(msg.messageHash).append("\n\n");
+        sb.append("ID: ").append(msg.messageId).append("\n");
+        sb.append("To: ").append(msg.recipient).append("\n");
+        sb.append("Message: ").append(msg.messageContent).append("\n");
+        sb.append("Hash: ").append(msg.messageHash).append("\n\n");
         }
         return sb.toString();
     }
@@ -275,7 +282,7 @@ private static void removeFromJsonFile(Message msgToRemove) {
         return sb.length() > 0 ? sb.toString() : "No messages found for this recipient";
     }
 
-    // Getters
+    //getters 
     public static List<Message> getSentMessages() { return sentMessages; }
     public static List<Message> getStoredMessages() { return storedMessages; }
     public static List<Message> getDisregardedMessages() { return disregardedMessages; }

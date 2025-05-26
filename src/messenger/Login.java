@@ -1,3 +1,14 @@
+/*
+ * Author: Fayaad Williams
+ * Student Number: ST10471235
+ * Project: Quick Chat App
+ *
+ * Note:
+ * Portions of this code were developed and debugged with the assistance of ChatGPT (OpenAI, 2025)
+ * for code explanation, error resolution and structure guidance.
+ * URL: https://chat.openai.com
+ */
+
 package messenger;
 
 public class Login {

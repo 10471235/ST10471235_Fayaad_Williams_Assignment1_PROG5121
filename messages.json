@@ -1,7 +1,16 @@
-[{
-    "recipient": "+27721841519",
-    "messageId": "1333979962",
-    "messageHash": "13:1:HEYDUDE",
-    "messageContent": "hey dude",
-    "status": "Stored"
-}]
+[
+    {
+        "recipient": "+27721841519",
+        "messageId": "1333979962",
+        "messageHash": "13:1:HEYDUDE",
+        "messageContent": "hey dude",
+        "status": "Stored"
+    },
+    {
+        "recipient": "+27829530004",
+        "messageId": "1630059204",
+        "messageHash": "16:3:HEYDUDEHEYDUDE",
+        "messageContent": "heydude",
+        "status": "Stored"
+    }
+]

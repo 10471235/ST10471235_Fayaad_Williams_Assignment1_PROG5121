@@ -1,3 +1,14 @@
+/*
+ * Author: Fayaad Williams
+ * Student Number: ST10471235
+ * Project: Quick chat app
+ *
+ * Note:
+ * Portions of this code were developed and debugged with the assistance of ChatGPT (OpenAI, 2025)
+ * for code explanation, error resolution and structure guidance.
+ * URL: https://chat.openai.com
+ */
+
 package messenger;
 
 import javax.swing.*;
@@ -16,35 +27,18 @@ public class QuickChatApp {
         boolean running = true;
         
         while (running) {
-            String[] options = {
-                "Send Messages", 
-                "Show Recent Messages",
-                "Message Reports",
-                "Quit"
-            };
+            String[] options = {"Send Messages", "Show Recent Messages","Message Reports","Quit"};
             
-            int choice = JOptionPane.showOptionDialog(
-                null,
-                "Welcome to QuickChat\nPlease select an option:",
-                "QuickChat Menu",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                options,
-                options[0]
-            );
+            int choice = JOptionPane.showOptionDialog(null,"Welcome to QuickChat\nPlease select an option:","QuickChat Menu",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
             
             if (choice==0) {
-            
-                    handleSendMessages();
-}                else if(choice==1){ // Show Recent Messages
-                    JOptionPane.showMessageDialog(null, 
-                        Message.generateReport());
-}                else if(choice==2){ // Message Reports
+            handleSendMessages();
+            }else if(choice==1){ //This option shows recent messages
+                    JOptionPane.showMessageDialog(null,Message.generateReport());
+}                else if(choice==2){ //This option displays message reports
                     showReportsMenu();
 }                else if(choice==3){running = false;
-                    JOptionPane.showMessageDialog(null, 
-                        "Thank you for using QuickChat!");} // Quit
+                    JOptionPane.showMessageDialog(null, "Thank you for using QuickChat!");} //This option exits the program
 else if(choice==-1){ // Window closed
                     running = false;
                     JOptionPane.showMessageDialog(null, 
@@ -54,55 +48,32 @@ else if(choice==-1){ // Window closed
     }
 
     private void showReportsMenu() {
-        String[] options = {
-            "Display Senders and Recipients",
-            "Find Longest Message",
-            "Search by Message ID",
-            "Search by Recipient",
-            "Delete by Message Hash",
-            "Generate Full Report",
-            "Back to Main Menu"
-        };
+        String[] options = {"Display Senders and Recipients","Find Longest Message","Search by Message ID","Search by Recipient","Delete by Message Hash","Generate Full Report","Back to Main Menu"};
         
-        int choice = JOptionPane.showOptionDialog(
-            null,
-            "Message Reports\nSelect an option:",
-            "Reports Menu",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.PLAIN_MESSAGE,
-            null,
-            options,
-            options[0]
-        );
+        int choice = JOptionPane.showOptionDialog(null,"Message Reports\nSelect an option:","Reports Menu",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
         
         if (choice==0) {
-                JOptionPane.showMessageDialog(null, 
-                    Message.displaySendersAndRecipients());              //senders and recipients
+                JOptionPane.showMessageDialog(null, Message.displaySendersAndRecipients());              //senders and recipients
         } else if (choice==1) {//display longest message
-                JOptionPane.showMessageDialog(null, 
-                    "Longest message:\n" + Message.findLongestMessage());
+                JOptionPane.showMessageDialog(null, "Longest message:\n" + Message.findLongestMessage());
 }            else if(choice==2){ //search by message Id
                 String id = JOptionPane.showInputDialog("Enter Message ID:");
                 if (id != null) {
-                    JOptionPane.showMessageDialog(null, 
-                        Message.searchByMessageId(id));
+                    JOptionPane.showMessageDialog(null, Message.searchByMessageId(id));
                 }
 }            else if(choice==3){ //search by recipient
                 String recipient = JOptionPane.showInputDialog("Enter Recipient Number:");
                 if (recipient != null) {
-                    JOptionPane.showMessageDialog(null, 
-                        Message.searchByRecipient(recipient));
+                    JOptionPane.showMessageDialog(null, Message.searchByRecipient(recipient));
                 }
 }            else if(choice==4){ //delete by message hash
                 String hash = JOptionPane.showInputDialog("Enter Message Hash:");
                 if (hash != null) {
-                    JOptionPane.showMessageDialog(null, 
-                        Message.deleteByHash(hash));
+                    JOptionPane.showMessageDialog(null, Message.deleteByHash(hash));
                 }
 }
 else if(choice==5){ //to generate a full report of messages
-                JOptionPane.showMessageDialog(null, 
-                    Message.generateReport());
+                JOptionPane.showMessageDialog(null, Message.generateReport());
         } 
     }
 
