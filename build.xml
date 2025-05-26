@@ -1,15 +1,13 @@
 <project name="QuickChat" default="test" basedir=".">
     <!-- Properties -->
     <property name="src.dir" location="src"/>
-    <property name="test.dir" location="test"/>
     <property name="build.dir" location="build"/>
     <property name="lib.dir" location="lib"/>
-    <property name="reports.dir" location="${build.dir}/test-reports"/>
 
     <!-- Classpath -->
-    <path id="test.classpath">
-        <pathelement location="${build.dir}"/>
+    <path id="classpath">
         <fileset dir="${lib.dir}" includes="*.jar"/>
+        <pathelement location="${build.dir}"/>
     </path>
 
     <!-- Targets -->
@@ -19,24 +17,17 @@
 
     <target name="compile" depends="clean">
         <mkdir dir="${build.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
-        <javac srcdir="${test.dir}" destdir="${build.dir}" includeantruntime="false">
-            <classpath refid="test.classpath"/>
-        </javac>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" 
+               classpathref="classpath" includeantruntime="false"/>
     </target>
 
     <target name="test" depends="compile">
-        <mkdir dir="${reports.dir}"/>
-        <junit printsummary="yes" haltonfailure="no">
-            <classpath refid="test.classpath"/>
-            <formatter type="xml"/>
-            <batchtest todir="${reports.dir}">
-                <fileset dir="${test.dir}" includes="**/*Test.java"/>
+        <junit printsummary="yes">
+            <classpath refid="classpath"/>
+            <batchtest>
+                <fileset dir="${src.dir}" includes="**/*Test.java"/>
             </batchtest>
+            <formatter type="brief" usefile="false"/>
         </junit>
-        <junitreport todir="${reports.dir}">
-            <fileset dir="${reports.dir}" includes="TEST-*.xml"/>
-            <report format="frames" todir="${reports.dir}/html"/>
-        </junitreport>
     </target>
 </project>
