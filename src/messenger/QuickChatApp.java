@@ -18,8 +18,7 @@ public class QuickChatApp {
 
     public QuickChatApp(Login loginSession) {
         this.userSession = loginSession;
-        // Load any previously stored messages
-        Message.loadStoredMessages();
+        Message.loadStoredMessages();//loads previously stored messages
         showMainMenu();
     }
 
@@ -39,7 +38,7 @@ public class QuickChatApp {
                     showReportsMenu();
 }                else if(choice==3){running = false;
                     JOptionPane.showMessageDialog(null, "Thank you for using QuickChat!");} //This option exits the program
-else if(choice==-1){ // Window closed
+else if(choice==-1){ //What happens after window is closed.
                     running = false;
                     JOptionPane.showMessageDialog(null, 
                         "Thank you for using QuickChat!");
@@ -61,15 +60,15 @@ else if(choice==-1){ // Window closed
                 if (id != null) {
                     JOptionPane.showMessageDialog(null, Message.searchByMessageId(id));
                 }
-}            else if(choice==3){ //search by recipient
-                String recipient = JOptionPane.showInputDialog("Enter Recipient Number:");
+}            else if(choice==3){ //search by recipient number
+                String recipient = JOptionPane.showInputDialog("Enter The Recipient's Number:");
                 if (recipient != null) {
                     JOptionPane.showMessageDialog(null, Message.searchByRecipient(recipient));
                 }
 }            else if(choice==4){ //delete by message hash
                 String hash = JOptionPane.showInputDialog("Enter Message Hash:");
                 if (hash != null) {
-                    JOptionPane.showMessageDialog(null, Message.deleteByHash(hash));
+        JOptionPane.showMessageDialog(null, Message.deleteByHash(hash));
                 }
 }
 else if(choice==5){ //to generate a full report of messages
@@ -79,20 +78,20 @@ else if(choice==5){ //to generate a full report of messages
 
     private void handleSendMessages() {
         try {
-            String numStr = JOptionPane.showInputDialog("How many messages would you like to send?");
+            String numStr = JOptionPane.showInputDialog("Enter amount of messages you want to send.");
             if (numStr == null) return;
             
-            int numMessages = Integer.parseInt(numStr);
+            int numMessages = Integer.parseInt(numStr); //converts the string to an integer
             
             for (int i = 0; i < numMessages; i++) {
-                String recipient = JOptionPane.showInputDialog("Enter recipient number (+27 format):");
+                String recipient = JOptionPane.showInputDialog("Enter recieving number(+27):");
                 if (recipient == null) break;
                 
-                String content = JOptionPane.showInputDialog("Enter your message (max 250 chars):");
+                String content = JOptionPane.showInputDialog("Enter your message (max 250 characters):");
                 if (content == null) break;
                 
                 if (content.length() > 250) {
-                    JOptionPane.showMessageDialog(null, "Message too long! Max 250 characters.");
+                    JOptionPane.showMessageDialog(null, "Message too long! Longer than 250 characters.");
                     i--; //look to retry message
                     continue;
                 }
