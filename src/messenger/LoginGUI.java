@@ -11,21 +11,29 @@
 
 package messenger;
 
-//Created with help from ChatGPT – OpenAI
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The LoginGUI class provides a gui for user registration and login.
+ * It creates a window with input fields for user info and buttons for actions.
+ */
 public class LoginGUI extends JFrame {
+    // GUI components
     private JTextField firstNameField, lastNameField, usernameField, cellphoneField, loginUsernameField;
     private JPasswordField passwordField, loginPasswordField;
     private JTextArea outputArea;
 
+    // Login instance to handle authentication
     private Login login;
 
+    //Constructor sets up the GUI window and components.
+    
     public LoginGUI() {
+        // Window configuration
         setTitle("User Registration and Login");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,6 +43,7 @@ public class LoginGUI extends JFrame {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(10, 2));
 
+        // Add input fields with labels
         inputPanel.add(new JLabel("First Name:"));
         firstNameField = new JTextField();
         inputPanel.add(firstNameField);
@@ -55,11 +64,13 @@ public class LoginGUI extends JFrame {
         cellphoneField = new JTextField();
         inputPanel.add(cellphoneField);
 
+        // Register button
         JButton registerButton = new JButton("Register");
         inputPanel.add(registerButton);
 
         inputPanel.add(new JLabel("")); 
 
+        // Login fields
         inputPanel.add(new JLabel("Login Username:"));
         loginUsernameField = new JTextField();
         inputPanel.add(loginUsernameField);
@@ -68,6 +79,7 @@ public class LoginGUI extends JFrame {
         loginPasswordField = new JPasswordField();
         inputPanel.add(loginPasswordField);
 
+        // Login button
         JButton loginButton = new JButton("Login");
         inputPanel.add(loginButton);
 
@@ -83,11 +95,13 @@ public class LoginGUI extends JFrame {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Create new Login instance with user's name
                 login = new Login(firstNameField.getText(), lastNameField.getText());
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
                 String cellphone = cellphoneField.getText();
 
+                // Attempt registration and show result
                 String result = login.registerUser(username, password, cellphone);
                 outputArea.setText(result);
             }
@@ -97,17 +111,21 @@ public class LoginGUI extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Check if user is registered first
                 if (login == null) {
                     outputArea.setText("Please register first.");
                     return;
                 }
 
+                // Get login credentials
                 String inputUsername = loginUsernameField.getText();
                 String inputPassword = new String(loginPasswordField.getPassword());
 
+                // Attempt login
                 boolean success = login.loginUser(inputUsername, inputPassword);
                 outputArea.setText(login.returnLoginStatus(success));
                 
+                // If successful, open chat application
                 if (success) {
                     dispose();
                     new QuickChatApp(login);
@@ -115,11 +133,13 @@ public class LoginGUI extends JFrame {
             }
         });
 
-        setVisible(true);
+        setVisible(true); // Make window visible
     }
 
+    // Main method to launch the application.
+
 public static void main(String[] args) {
-    new LoginGUI();
+    new LoginGUI(); // Creates and shows the GUI
 }
 }
 // --- End of Code ---
